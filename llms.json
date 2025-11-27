@@ -1,0 +1,58 @@
+{
+  "llms": {
+    "gpt-5.1-codex": {
+      "model_id": "gpt-5.1-codex",
+      "provider": "openai",
+      "sdk": "langchain_openai.ChatOpenAI",
+      "api_key_env": "OPENAI_API_KEY",
+      "output_version": "responses/v1",
+      "use_previous_response_id": true,
+      "parameters": {
+        "reasoning": {
+          "effort": "high",
+          "summary": "auto"
+        }
+      }
+    },
+    "gpt-5.1-codex-mini": {
+      "model_id": "gpt-5.1-codex",
+      "provider": "openai",
+      "sdk": "langchain_openai.ChatOpenAI",
+      "api_key_env": "OPENAI_API_KEY",
+      "output_version": "responses/v1",
+      "use_previous_response_id": true,
+      "parameters": {
+        "reasoning": {
+          "effort": "low",
+          "summary": "auto"
+        }
+      }
+    },
+    "minimax": {
+      "model_id": "minimax-m2",
+      "provider": "anthropic",
+      "sdk": "langchain_anthropic.ChatAnthropic",
+      "api_key_env": "MINIMAX_API_KEY",
+      "base_url": "https://api.minimax.io/anthropic"
+    },
+    "claude-sonnet-4-5": {
+      "model_id": "claude-sonnet-4-5-20250929",
+      "provider": "anthropic",
+      "sdk": "langchain_anthropic.ChatAnthropic",
+      "api_key_env": "ANTHROPIC_API_KEY"
+    },
+    "claude-opus-4-5": {
+      "model_id": "claude-opus-4-5-20251101",
+      "provider": "anthropic",
+      "sdk": "langchain_anthropic.ChatAnthropic",
+      "api_key_env": "ANTHROPIC_API_KEY"
+    },
+
+    "gemini-3-pro": {
+      "model_id": "gemini-3-pro-preview",
+      "provider": "google",
+      "sdk": "langchain_google_genai.ChatGoogleGenerativeAI",
+      "api_key_env": "GEMINI_API_KEY"
+    }
+  }
+}
