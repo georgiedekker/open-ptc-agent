@@ -1,7 +1,7 @@
-"""PTC Agent - Main agent using deepagent with Programmatic Tool Calling pattern.
+"""PTC Agent - Main agent using create_agent with Programmatic Tool Calling pattern.
 
 This module creates a PTC agent that:
-- Uses deepagent's create_deep_agent for orchestration
+- Uses langchain's create_agent with custom middleware stack
 - Integrates Daytona sandbox via DaytonaBackend
 - Provides MCP tools through execute_code
 - Supports sub-agent delegation for specialized tasks
@@ -10,7 +10,7 @@ This module creates a PTC agent that:
 from typing import Any, Dict, List, Optional
 
 import structlog
-from deepagents import create_deep_agent
+from langchain.agents import create_agent
 
 from src.ptc_core.mcp_registry import MCPRegistry
 from src.ptc_core.sandbox import PTCSandbox, ExecutionResult
@@ -33,6 +33,7 @@ from src.agent.middleware import (
     ToolCallCounterMiddleware,
     ViewImageMiddleware,
     create_view_image_tool,
+    create_deepagent_middleware,
 )
 
 logger = structlog.get_logger(__name__)
@@ -45,10 +46,11 @@ DEFAULT_MAX_GENERAL_ITERATIONS = 10
 
 
 class PTCAgent:
-    """Agent that uses deepagent with Programmatic Tool Calling (PTC) pattern for MCP tool execution.
+    """Agent that uses Programmatic Tool Calling (PTC) pattern for MCP tool execution.
 
     This agent:
-    - Uses deepagent's built-in filesystem tools via DaytonaBackend
+    - Uses langchain's create_agent with custom middleware stack
+    - Integrates Daytona sandbox via DaytonaBackend
     - Provides execute_code tool for MCP tool invocation
     - Supports sub-agent delegation for specialized tasks
     """
@@ -291,26 +293,28 @@ class PTCAgent:
         self.native_tools = [t.name if hasattr(t, "name") else str(t) for t in tools]
 
         logger.info(
-            "Creating deepagent",
+            "Creating agent with custom middleware stack",
             tool_count=len(tools),
             subagent_count=len(subagents),
             use_custom_filesystem_tools=self.config.use_custom_filesystem_tools,
         )
 
-        # Create deepagent with backend
-        # Note: deep-agent automatically adds these middlewares:
-        # - TodoListMiddleware, SummarizationMiddleware, FilesystemMiddleware,
-        # - SubAgentMiddleware, AnthropicPromptCachingMiddleware, PatchToolCallsMiddleware
-        # Our custom "general-purpose" subagent overrides the built-in one (same name)
-        # Subagent list is also included in system prompt for easy reference
-        agent = create_deep_agent(
+        # Build middleware inherited from deepagent
+        deepagent_middleware = create_deepagent_middleware(
             model=self.llm,
             tools=tools,
-            system_prompt=system_prompt,
-            subagents=subagents if subagents else None,
+            subagents=subagents,
             backend=backend,
-            middleware=middleware_list if middleware_list else None,
+            custom_middleware=middleware_list,
         )
+
+        # Create agent with middleware stack
+        agent = create_agent(
+            self.llm,
+            system_prompt=system_prompt,
+            tools=tools,
+            middleware=deepagent_middleware,
+        ).with_config({"recursion_limit": 1000})
 
         # Wrap with orchestrator for background execution support
         return BackgroundSubagentOrchestrator(
