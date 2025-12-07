@@ -27,7 +27,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.ptc_core.session import SessionManager
-from src.ptc_core.config import CoreConfig
+from src.config import load_core_from_files
 
 # Import search tools directly to avoid Tavily initialization issue
 def load_module_from_path(module_name, file_path):
@@ -502,7 +502,7 @@ async def main():
     try:
         # Setup
         print("\n[SETUP] Initializing sandbox environment...")
-        config = await CoreConfig.load()
+        config = await load_core_from_files()
         session = SessionManager.get_session("search-effectiveness-test", config)
         await session.initialize()
 

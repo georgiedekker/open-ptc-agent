@@ -5,7 +5,7 @@ from typing import Any
 import structlog
 
 from .mcp_registry import MCPToolInfo
-from .config import MCPServerConfig
+from src.config.core import MCPServerConfig
 
 logger = structlog.get_logger(__name__)
 

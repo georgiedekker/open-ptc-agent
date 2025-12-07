@@ -1,7 +1,7 @@
 """Shared configuration loading utilities.
 
 This module provides common functions for loading and validating YAML configuration
-files, eliminating duplication between CoreConfig and AgentConfig.
+files
 """
 
 import asyncio
@@ -145,7 +145,7 @@ def create_daytona_config(data: dict[str, Any]) -> "DaytonaConfig":
         Configured DaytonaConfig object
     """
     import os
-    from src.ptc_core.config import DaytonaConfig
+    from src.config.core import DaytonaConfig
 
     validate_section_fields(data, DAYTONA_REQUIRED_FIELDS, "daytona")
     return DaytonaConfig(
@@ -170,7 +170,7 @@ def create_security_config(data: dict[str, Any]) -> "SecurityConfig":
     Returns:
         Configured SecurityConfig object
     """
-    from src.ptc_core.config import SecurityConfig
+    from src.config.core import SecurityConfig
 
     validate_section_fields(data, SECURITY_REQUIRED_FIELDS, "security")
     return SecurityConfig(
@@ -192,7 +192,7 @@ def create_mcp_config(data: dict[str, Any]) -> "MCPConfig":
     Returns:
         Configured MCPConfig object
     """
-    from src.ptc_core.config import MCPConfig, MCPServerConfig
+    from src.config.core import MCPConfig, MCPServerConfig
 
     validate_section_fields(data, MCP_REQUIRED_FIELDS, "mcp")
     mcp_servers = [MCPServerConfig(**server) for server in data["servers"]]
@@ -214,7 +214,7 @@ def create_logging_config(data: dict[str, Any]) -> "LoggingConfig":
     Returns:
         Configured LoggingConfig object
     """
-    from src.ptc_core.config import LoggingConfig
+    from src.config.core import LoggingConfig
 
     validate_section_fields(data, LOGGING_REQUIRED_FIELDS, "logging")
     return LoggingConfig(
@@ -232,7 +232,7 @@ def create_filesystem_config(data: dict[str, Any]) -> "FilesystemConfig":
     Returns:
         Configured FilesystemConfig object
     """
-    from src.ptc_core.config import FilesystemConfig
+    from src.config.core import FilesystemConfig
 
     validate_section_fields(data, FILESYSTEM_REQUIRED_FIELDS, "filesystem")
     return FilesystemConfig(

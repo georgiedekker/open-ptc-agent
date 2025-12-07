@@ -5,7 +5,7 @@ from typing import Any
 
 import structlog
 
-from .config import CoreConfig
+from src.config.core import CoreConfig
 from .mcp_registry import MCPRegistry
 from .sandbox import PTCSandbox
 

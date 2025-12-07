@@ -16,7 +16,7 @@ from src.ptc_core.mcp_registry import MCPRegistry
 from src.ptc_core.sandbox import PTCSandbox, ExecutionResult
 
 from src.agent.backends import DaytonaBackend
-from src.agent.config import AgentConfig
+from src.config import AgentConfig
 from src.agent.tools import (
     create_execute_bash_tool,
     create_execute_code_tool,
@@ -65,10 +65,20 @@ class PTCAgent:
         self.llm = config.get_llm_client()
         self.subagents = {}  # Populated in create_agent() for introspection
 
+        # Get provider/model info for logging
+        if config.llm_definition is not None:
+            provider = config.llm_definition.provider
+            model = config.llm_definition.model_id
+        else:
+            # LLM client was passed directly via AgentConfig.create()
+            # Try to extract info from the LLM instance
+            provider = getattr(self.llm, "_llm_type", "unknown")
+            model = getattr(self.llm, "model", getattr(self.llm, "model_name", "unknown"))
+
         logger.info(
             "Initialized PTCAgent with deepagent",
-            provider=config.llm_definition.provider,
-            model=config.llm_definition.model_id,
+            provider=provider,
+            model=model,
         )
 
     def _get_subagent_summary(self, mcp_registry: Optional[MCPRegistry] = None) -> str:
@@ -487,13 +497,14 @@ async def create_ptc_agent(config: Optional[AgentConfig] = None) -> PTCAgent:
     Factory function for LangGraph deployment.
 
     Args:
-        config: Optional agent configuration. If None, loads from default.
+        config: Optional agent configuration. If None, loads from default config files.
 
     Returns:
         Configured PTCAgent
     """
     if config is None:
-        config = await AgentConfig.load()
+        from src.config import load_from_files
+        config = await load_from_files()
         config.validate_api_keys()
 
     return PTCAgent(config)

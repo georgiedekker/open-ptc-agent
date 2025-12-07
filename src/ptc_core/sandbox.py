@@ -21,7 +21,7 @@ from daytona_sdk.common.daytona import (
 )
 from daytona_sdk.common.snapshot import CreateSnapshotParams
 
-from .config import CoreConfig
+from src.config.core import CoreConfig
 from .mcp_registry import MCPRegistry
 from .tool_generator import ToolFunctionGenerator
 

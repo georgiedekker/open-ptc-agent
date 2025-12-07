@@ -18,7 +18,7 @@ __version__ = "0.1.0"
 
 from .sandbox import PTCSandbox, ExecutionResult, ChartData
 from .session import Session, SessionManager
-from .config import CoreConfig
+from src.config.core import CoreConfig
 from .mcp_registry import MCPRegistry, MCPToolInfo
 from .tool_generator import ToolFunctionGenerator
 

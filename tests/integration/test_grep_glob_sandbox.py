@@ -23,7 +23,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.ptc_core.session import SessionManager
-from src.ptc_core.config import CoreConfig
+from src.config import load_core_from_files
 
 # Import search tools directly to avoid Tavily initialization issue
 def load_module_from_path(module_name, file_path):
@@ -83,7 +83,7 @@ async def setup_environment():
 
     # Load configuration
     print("\n1. Loading CoreConfig from config.yaml...")
-    config = await CoreConfig.load()
+    config = await load_core_from_files()
     print(f"   Daytona base URL: {config.daytona.base_url}")
     print(f"   Filesystem allowed dirs: {config.filesystem.allowed_directories}")
     print(f"   Path validation enabled: {config.filesystem.enable_path_validation}")
@@ -100,7 +100,7 @@ async def setup_environment():
     sandbox = session.sandbox
     print(f"\n4. Sandbox info:")
     print(f"   Sandbox ID: {sandbox.sandbox_id}")
-    print(f"   Working directory: {getattr(sandbox, 'working_directory', 'unknown')}")
+    print(f"   Working directory: {getattr(sandbox, '_work_dir', 'unknown')}")
 
     # Get tools - create directly to avoid other import issues
     print("\n5. Creating Glob and Grep tools...")

@@ -10,7 +10,7 @@ from unittest.mock import Mock, MagicMock
 
 from src.agent import PTCAgent
 from src.agent.prompts import get_loader, reset_loader
-from src.ptc_core.config import CoreConfig as Config
+from src.config import CoreConfig as Config
 from src.ptc_core.mcp_registry import MCPRegistry, MCPToolInfo
 
 

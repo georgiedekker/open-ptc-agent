@@ -13,7 +13,7 @@ from langgraph.graph import StateGraph, MessagesState, START, END
 
 from src.ptc_core.session import SessionManager
 from src.agent.agent import PTCAgent
-from src.agent.config import AgentConfig
+from src.config import load_from_files
 
 
 # Global session state for sandbox persistence (lazy initialization)
@@ -26,7 +26,7 @@ async def _ensure_initialized():
     """Ensure PTC session is initialized with sandbox and MCP registry.
 
     This function lazily initializes:
-    - AgentConfig from config.yaml
+    - AgentConfig from config.yaml via load_from_files()
     - SessionManager with Daytona sandbox
     - PTCAgent instance
 
@@ -37,7 +37,7 @@ async def _ensure_initialized():
 
     if _session is None:
         # Use async config loading to avoid blocking I/O
-        _config = await AgentConfig.load()
+        _config = await load_from_files()
         _config.validate_api_keys()
 
         core_config = _config.to_core_config()

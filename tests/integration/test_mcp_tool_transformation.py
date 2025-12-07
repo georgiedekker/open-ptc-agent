@@ -22,7 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.ptc_core.session import SessionManager
-from src.ptc_core.config import CoreConfig
+from src.config import load_core_from_files
 
 
 def parse_args():
@@ -48,7 +48,7 @@ async def test_mcp_tool_transformation(no_cleanup: bool = False):
 
     # Load config
     print("\n[1] Loading configuration...")
-    config = await CoreConfig.load()
+    config = await load_core_from_files()
     print(f"    Daytona API URL: {config.daytona.base_url}")
     print(f"    MCP servers configured: {len(config.mcp.servers)}")
     for server in config.mcp.servers:

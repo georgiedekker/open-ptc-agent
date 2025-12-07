@@ -27,7 +27,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.ptc_core.session import SessionManager
-from src.ptc_core.config import CoreConfig
+from src.config import load_core_from_files
 
 
 def load_module_from_path(module_name, file_path):
@@ -84,7 +84,7 @@ async def setup_environment():
 
     # Load configuration
     print("\n1. Loading CoreConfig from config.yaml...")
-    config = await CoreConfig.load()
+    config = await load_core_from_files()
     print(f"   Daytona base URL: {config.daytona.base_url}")
 
     # Create and initialize session
