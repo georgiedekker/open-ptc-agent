@@ -15,7 +15,8 @@ This project is an open source implementation of Anthropic recently introduced [
 
 1. LLMs are exceptionally good at writing code! They excel at understanding context, reasoning about data flows, and generating precise logic. PTC lets them do what they do best - write code that orchestrates entire workflows rather than reasoning through one tool call at a time.
 
-2. Traditional tool calling returns full results to the model's context window. Analyzing expenses for 20 employees means 2,000+ line items polluting context - over 110,000 tokens just to produce a summary. With PTC, code runs in a sandbox, processes data locally, and only the final output returns to the model. Result: 85-98% token reduction.
+2. Traditional tool calling returns full results to the model's context window. Suppose fetching 1 year of daily stock prices for 10 tickers. This means 2,500+ OHLCV data points polluting context - tens of thousands of tokens just to compute a portfolio summary. With PTC, code runs in a sandbox, processes data locally, and only the final output returns to the model. Result: 85-98% token reduction.
+
 
 3. PTC particularly shines when working with large volumes of structured data, time series data (like financial market data), and scenarios requiring further data processing - filtering, aggregating, transforming, or visualizing results before returning them to the model.
 
@@ -276,7 +277,7 @@ Planned features and improvements:
 - [ ] Performance benchmarks and optimizations
 - [ ] Improved search tool for smoother tool discovery
 - [ ] Claude skill integration
-- [ ] DeepAgents CLI integration (Need further investigation to see if it is possible)
+- [ ] CLI Version for PTC Agent (Release soon)
 
 ## Contributing
 

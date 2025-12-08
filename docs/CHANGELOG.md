@@ -4,6 +4,17 @@ All notable changes to Open PTC Agent are documented here.
 
 Repository: https://github.com/Chen-zexi/open-ptc-agent
 
+## [Dec 1-7, 2025]
+
+### Added
+- Sandbox session persistence and async sandbox initialization for improved lifecycle management ([c3ce2e5](https://github.com/Chen-zexi/open-ptc-agent/commit/c3ce2e5))
+- Extended `astream` with full LangGraph streaming API compatibility in background orchestrator ([b777cfb](https://github.com/Chen-zexi/open-ptc-agent/commit/b777cfb))
+
+### Changed
+- Consolidated configuration files into single `config/` directory with enhanced config loading methods ([e1aad19](https://github.com/Chen-zexi/open-ptc-agent/commit/e1aad19))
+- Extracted deepagent built-in middleware to separate module ([1d5138e](https://github.com/Chen-zexi/open-ptc-agent/commit/1d5138e))
+- Streamlined tool docstrings to reduce prompt token usage ([967ea7d](https://github.com/Chen-zexi/open-ptc-agent/commit/967ea7d))
+
 ## [Nov 27 - Dec 1, 2025]
 
 ### Added
